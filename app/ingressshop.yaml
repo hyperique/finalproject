@@ -21,10 +21,11 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: frontend-external
+            name: frontend
             port:
               name: http
   tls:
   - hosts:
     - demoshop.ust.inc
     secretName: demoshop-tls # as expected by argocd-server
+    
