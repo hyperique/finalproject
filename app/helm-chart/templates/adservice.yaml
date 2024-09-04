@@ -46,6 +46,8 @@ spec:
         app: {{ .Values.adService.name }}
       annotations:
         consul.hashicorp.com/connect-inject: 'true'    
+        consul.hashicorp.com/transparent-proxy: 'true'
+        consul.hashicorp.com/transparent-proxy-overwrite-probes: 'false'
     spec:
       {{- if .Values.serviceAccounts.create }}
       serviceAccountName: {{ .Values.adService.name }}
