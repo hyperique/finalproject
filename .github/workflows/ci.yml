@@ -54,7 +54,7 @@ jobs:
           NEW_TAG="${{ steps.version.outputs.new_version }}"
           sed -i "s|hyperique/finalproject:currencyservice-.*|hyperique/finalproject:currencyservice-$NEW_TAG|" "${{ github.workspace }}/app/helm-chart/templates/currencyservice.yaml"
           sed -i "s|hyperique/finalproject:loadgenerator-.*|hyperique/finalproject:loadgenerator-$NEW_TAG|" "${{ github.workspace }}/app/helm-chart/templates/loadgenerator.yaml"
-          sed -i "s|hyperique/finalproject:productcatalogservice-.*|hyperique/finalproject:productcatalogservice-$NEW_TAG|" "${{ github.workspace }}/app/helm-chart/templates/productcatalog.yaml"
+          sed -i "s|hyperique/finalproject:productcatalogservice-.*|hyperique/finalproject:productcatalogservice-$NEW_TAG|" "${{ github.workspace }}/app/helm-chart/templates/productcatalogservice.yaml"
           sed -i "s|hyperique/finalproject:checkoutservice-.*|hyperique/finalproject:checkoutservice-$NEW_TAG|" "${{ github.workspace }}/app/helm-chart/templates/checkoutservice.yaml"
           sed -i "s|hyperique/finalproject:shippingservice-.*|hyperique/finalproject:shippingservice-$NEW_TAG|" "${{ github.workspace }}/app/helm-chart/templates/shippingservice.yaml"
           sed -i "s|hyperique/finalproject:cartservice-.*|hyperique/finalproject:cartservice-$NEW_TAG|" "${{ github.workspace }}/app/helm-chart/templates/cartservice.yaml"
