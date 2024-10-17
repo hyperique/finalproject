@@ -42,7 +42,7 @@ jobs:
           for IMAGE in "${IMAGES[@]}"
           do
             ORIG_IMAGE="gcr.io/google-samples/microservices-demo/$IMAGE:v0.10.1"            
-            NEW_IMAGE="hyperique/hyperique:$IMAGE-$NEW_TAG"
+            NEW_IMAGE="hyperique/hyperique/$IMAGE:$NEW_TAG"
             
             docker pull $ORIG_IMAGE
             docker tag $ORIG_IMAGE $NEW_IMAGE
