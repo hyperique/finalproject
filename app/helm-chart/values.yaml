@@ -17,9 +17,9 @@
 # Declare variables to be passed into your templates.
 
 images:
-  repository: gcr.io/google-samples/microservices-demo
+  repository: hyperique/hyperique
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: "0.1.0"
 
 serviceAccounts:
   # Specifies whether service accounts should be created.
