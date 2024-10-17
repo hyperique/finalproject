@@ -42,7 +42,7 @@ jobs:
           for IMAGE in "${IMAGES[@]}"
           do
             ORIG_IMAGE="gcr.io/google-samples/microservices-demo/$IMAGE:v0.10.1"            
-            NEW_IMAGE="hyperique/hyperique:$IMAGE-$NEW_TAG"
+            NEW_IMAGE="hyperique/hyperique:$IMAGE:$NEW_TAG"
             
             docker pull $ORIG_IMAGE
             docker tag $ORIG_IMAGE $NEW_IMAGE
@@ -52,7 +52,7 @@ jobs:
       - name: Update Kubernetes manifests 
         run: |
           NEW_TAG="${{ steps.version.outputs.new_version }}"
-          sed -i "s|tag:.*|tag:$NEW_TAG|" "${{ github.workspace }}/app/helm-chart/values.yaml"
+          sed -i "s|tag:.*|tag: $NEW_TAG|" "${{ github.workspace }}/app/helm-chart/values.yaml"
           
 
       - name: Commit and push if there are changes
