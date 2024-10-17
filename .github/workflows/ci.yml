@@ -52,7 +52,7 @@ jobs:
       - name: Update Kubernetes manifests 
         run: |
           NEW_TAG="${{ steps.version.outputs.new_version }}"
-          sed -i "s|hyperique/finalproject:currencyservice-.*|hyperique/finalproject:currencyservice-$NEW_TAG|" "${{ github.workspace }}/templates/currenctservice.yaml"
+          sed -i "s|hyperique/finalproject:currencyservice-.*|hyperique/finalproject:currencyservice-$NEW_TAG|" "${{ github.workspace }}/templates/currencyservice.yaml"
           sed -i "s|hyperique/finalproject:loadgenerator-.*|hyperique/finalproject:loadgenerator-$NEW_TAG|" "${{ github.workspace }}/templates/loadgenerator.yaml"
           sed -i "s|hyperique/finalproject:productcatalogservice-.*|hyperique/finalproject:productcatalogservice-$NEW_TAG|" "${{ github.workspace }}/templates/productcatalog.yaml"
           sed -i "s|hyperique/finalproject:checkoutservice-.*|hyperique/finalproject:checkoutservice-$NEW_TAG|" "${{ github.workspace }}/templates/checkoutservice.yaml"
