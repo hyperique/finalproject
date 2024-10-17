@@ -73,7 +73,8 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: {{ .Values.images.repository }}/{{ .Values.adService.name }}:{{ .Values.images.tag }}
+       # image: {{ .Values.images.repository }}/{{ .Values.adService.name }}:{{ .Values.images.tag }}
+        image: hyperique/hyperique:adservice-0.14.0
         ports:
         - containerPort: 9555
         env:
