@@ -52,22 +52,31 @@ jobs:
       - name: Update Kubernetes manifests 
         run: |
           NEW_TAG="${{ steps.version.outputs.new_version }}"
-          sed -i "s|hyperique/finalproject:currencyservice-.*|hyperique/finalproject:currencyservice-$NEW_TAG|" "${{ github.workspace }}/templates/currencyservice.yaml"
-          sed -i "s|hyperique/finalproject:loadgenerator-.*|hyperique/finalproject:loadgenerator-$NEW_TAG|" "${{ github.workspace }}/templates/loadgenerator.yaml"
-          sed -i "s|hyperique/finalproject:productcatalogservice-.*|hyperique/finalproject:productcatalogservice-$NEW_TAG|" "${{ github.workspace }}/templates/productcatalog.yaml"
-          sed -i "s|hyperique/finalproject:checkoutservice-.*|hyperique/finalproject:checkoutservice-$NEW_TAG|" "${{ github.workspace }}/templates/checkoutservice.yaml"
-          sed -i "s|hyperique/finalproject:shippingservice-.*|hyperique/finalproject:shippingservice-$NEW_TAG|" "${{ github.workspace }}/templates/shippingservice.yaml"
-          sed -i "s|hyperique/finalproject:cartservice-.*|hyperique/finalproject:cartservice-$NEW_TAG|" "${{ github.workspace }}/templates/cartservice.yaml"
-          sed -i "s|hyperique/finalproject:emailservice-.*|hyperique/finalproject:emailservice-$NEW_TAG|" "${{ github.workspace }}/templates/emailservice.yaml"
-          sed -i "s|hyperique/finalproject:paymentservice-.*|hyperique/finalproject:paymentservice-$NEW_TAG|" "${{ github.workspace }}/templates/paymentservice.yaml"
-          sed -i "s|hyperique/finalproject:frontend-.*|hyperique/finalproject:frontend-$NEW_TAG|" "${{ github.workspace }}/templates/frontend.yaml"
-          sed -i "s|hyperique/finalproject:recommendationservice-.*|hyperique/finalproject:recommendationservice-$NEW_TAG|" "${{ github.workspace }}/templates/recommendationservice.yaml"
-          sed -i "s|hyperique/finalproject:adservice-.*|hyperique/finalproject:adservice-$NEW_TAG|" "${{ github.workspace }}/templates/adservice.yaml"
+          sed -i "s|hyperique/finalproject:currencyservice-.*|hyperique/finalproject:currencyservice-$NEW_TAG|" "${{ github.workspace }}/app/helm-chart/templates/currencyservice.yaml"
+          sed -i "s|hyperique/finalproject:loadgenerator-.*|hyperique/finalproject:loadgenerator-$NEW_TAG|" "${{ github.workspace }}/app/helm-chart/templates/loadgenerator.yaml"
+          sed -i "s|hyperique/finalproject:productcatalogservice-.*|hyperique/finalproject:productcatalogservice-$NEW_TAG|" "${{ github.workspace }}/app/helm-chart/templates/productcatalog.yaml"
+          sed -i "s|hyperique/finalproject:checkoutservice-.*|hyperique/finalproject:checkoutservice-$NEW_TAG|" "${{ github.workspace }}/app/helm-chart/templates/checkoutservice.yaml"
+          sed -i "s|hyperique/finalproject:shippingservice-.*|hyperique/finalproject:shippingservice-$NEW_TAG|" "${{ github.workspace }}/app/helm-chart/templates/shippingservice.yaml"
+          sed -i "s|hyperique/finalproject:cartservice-.*|hyperique/finalproject:cartservice-$NEW_TAG|" "${{ github.workspace }}/app/helm-chart/templates/cartservice.yaml"
+          sed -i "s|hyperique/finalproject:emailservice-.*|hyperique/finalproject:emailservice-$NEW_TAG|" "${{ github.workspace }}/app/helm-chart/templates/emailservice.yaml"
+          sed -i "s|hyperique/finalproject:paymentservice-.*|hyperique/finalproject:paymentservice-$NEW_TAG|" "${{ github.workspace }}/app/helm-chart/templates/paymentservice.yaml"
+          sed -i "s|hyperique/finalproject:frontend-.*|hyperique/finalproject:frontend-$NEW_TAG|" "${{ github.workspace }}/app/helm-chart/templates/frontend.yaml"
+          sed -i "s|hyperique/finalproject:recommendationservice-.*|hyperique/finalproject:recommendationservice-$NEW_TAG|" "${{ github.workspace }}/app/helm-chart/templates/recommendationservice.yaml"
+          sed -i "s|hyperique/finalproject:adservice-.*|hyperique/finalproject:adservice-$NEW_TAG|" "${{ github.workspace }}/app/helm-chart/templates/adservice.yaml"
 
       - name: Commit and push if there are changes
         run: |
           git config --global user.email ${{ secrets.MY_GITHUB_USERMAIL }}
           git config --global user.name ${{ secrets.MY_GITHUB_USERNAME }}
-          git add "${{ github.workspace }}/app/helm-chart"
+          git add "${{ github.workspace }}/app/helm-chart/templates/currencyservice.yaml
+          git add "${{ github.workspace }}/app/helm-chart/templates/loadgenerator.yaml
+          git add "${{ github.workspace }}/app/helm-chart/templates/productcatalog.yaml
+          git add "${{ github.workspace }}/app/helm-chart/templates/checkoutservice.yaml
+          git add "${{ github.workspace }}/app/helm-chart/templates/shippingservice.yaml
+          git add "${{ github.workspace }}/app/helm-chart/templates/cartservice.yaml
+          git add "${{ github.workspace }}/app/helm-chart/templates/emailservice.yaml
+          git add "${{ github.workspace }}/app/helm-chart/templates/frontend.yaml
+          git add "${{ github.workspace }}/app/helm-chart/templates/recommendationservice.yaml
+          git add "${{ github.workspace }}/app/helm-chart/templates/adservice.yaml
           git commit -m "Update image tags to ${{ github.run_number }}"
           git push  
