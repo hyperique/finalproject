@@ -73,7 +73,7 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: {{ .Values.images.repository }}/{{ .Values.adService.name }}-{{ .Values.images.tag }}
+        image: {{ .Values.images.repository }}/{{ .Values.adService.name }}:{{ .Values.images.tag }}
         ports:
         - containerPort: 9555
         env:
