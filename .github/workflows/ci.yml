@@ -52,7 +52,7 @@ jobs:
       - name: Update Kubernetes manifests 
         run: |
           NEW_TAG="${{ steps.version.outputs.new_version }}"
-          sed -i "s|hyperique/finalproject:tag:.*|hyperique/finalproject:tag:$NEW_TAG|" "${{ github.workspace }}/app/helm-chart/values.yaml"
+          sed -i "s|tag:.*|tag:$NEW_TAG|" "${{ github.workspace }}/app/helm-chart/values.yaml"
           
 
       - name: Commit and push if there are changes
