@@ -13,3 +13,8 @@
  ```helm upgrade --install --namespace minio --create-namespace --values minio/values.yaml minio-k8s minio-operator/tenant```
 
  ![alt text]({EEFA2CEB-382D-40B4-BF24-B0026BD1BF96}.png)
+
+
+3. Авторизируемся в платформу и создадим бакет для логов loki.
+
+![alt text]({C44D714B-B04B-4DD1-B281-7CA6AA76B443}.png)

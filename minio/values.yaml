@@ -243,7 +243,7 @@ tenant:
     externalCertSecret: [ ]
     ###
     # Enable automatic Kubernetes based `certificate generation and signing <https://kubernetes.io/docs/tasks/tls/managing-tls-in-a-cluster>`__
-    requestAutoCert: true
+    requestAutoCert: false
     ###
     # The minimum number of days to expiry before an alert for an expiring certificate is fired.
     # In the below example, if a given certificate will expire in 7 days then expiration events will only be triggered 1 day before expiry
@@ -486,9 +486,9 @@ ingress:
     labels: { }
     annotations:
        kubernetes.io/ingress.class: "nginx"
-       cert-manager.io/cluster-issuer: "letsencrypt-k8s"
+       #cert-manager.io/cluster-issuer: "letsencrypt-k8s"
        nginx.ingress.kubernetes.io/proxy-ssl-verify: "off"
-       nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+       #nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
        nginx.ingress.kubernetes.io/rewrite-target: /
        nginx.ingress.kubernetes.io/proxy-body-size: "0"
       # nginx.ingress.kubernetes.io/server-snippet: |

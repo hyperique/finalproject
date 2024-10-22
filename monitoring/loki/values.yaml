@@ -1,0 +1,93 @@
+global:
+    clusterDomain: ust.local
+    dnsService: coredns
+loki:
+  auth_enabled: false
+  schemaConfig:
+    configs:
+      - from: "2024-04-01"
+        store: tsdb
+        object_store: s3
+        schema: v13
+        index:
+          prefix: loki_index_
+          period: 24h
+  ingester:
+    chunk_encoding: snappy
+  tracing:
+    enabled: true
+  querier:
+    max_concurrent: 4
+
+  storage:
+    type: s3
+    bucketNames:
+      chunks: "logs"
+      ruler: "logs"
+      admin: "logs"
+    s3:
+      # s3 URL can be used to specify the endpoint, access key, secret key, and bucket name
+     # s3: s3://access_key:secret_access_key@custom_endpoint/bucket_name
+      # AWS endpoint URL
+      endpoint: http://minio.minio.svc.ust.local
+      # AWS region where the S3 bucket is located
+      region: by_minsk
+      # AWS secret access key
+      secretAccessKey: 12AEBcBgVc7vUZChrhhViVpByqeZ5MOOCv8TvlOl
+      # AWS access key ID
+      accessKeyId: zHlrung3VJ9WQKW3eOhU
+      # AWS signature version (e.g., v2 or v4)
+      #signatureVersion: <your-signature-version>
+      # Forces the path style for S3 (true/false)
+      s3ForcePathStyle: true
+      # Allows insecure (HTTP) connections (true/false)
+      insecure: true
+      # HTTP configuration settings
+      http_config: {}
+
+deploymentMode: SimpleScalable
+gateway:
+ nginx:
+    enabled: true
+    config:
+      http:
+        resolver: 10.233.0.3
+backend:
+  persistence:
+    storageClass: nfs-client
+    size: 1Gi
+  replicas: 3
+read:
+  replicas: 3
+write:
+  persistence:
+    storageClass: nfs-client
+    size: 1Gi
+  replicas: 3
+
+# Disable minio storage
+minio:
+  enabled: false
+
+# Zero out replica counts of other deployment modes
+singleBinary:
+  replicas: 0
+
+ingester:
+  replicas: 0
+querier:
+  replicas: 0
+queryFrontend:
+  replicas: 0
+queryScheduler:
+  replicas: 0
+distributor:
+  replicas: 0
+compactor:
+  replicas: 0
+indexGateway:
+  replicas: 0
+bloomCompactor:
+  replicas: 0
+bloomGateway:
+  replicas: 0
