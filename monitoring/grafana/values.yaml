@@ -1113,7 +1113,11 @@ grafana:
         uid: alertmanager
         handleGrafanaManagedAlerts: false
         implementation: prometheus
-
+      loki:
+        enabled: true
+        name: Loki
+        uid: loki
+        
   extraConfigmapMounts: []
   # - name: certs-configmap
   #   mountPath: /etc/grafana/ssl/
