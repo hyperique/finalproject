@@ -89,3 +89,7 @@ linstor storage-pool create lvmthin ust-k8s-etp-linstor-node1 linstor-pool-hdd-a
 
 
 
+Далее развернем linstor controller:
+
+`kubectl apply -f linstorcontroller.yaml`
+
