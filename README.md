@@ -18,4 +18,5 @@
  10. Consul https://consul.ust.inc
  11. NFS subdir external provisioner
  12. Linstor
-
+ 13. Alertmanager
+ 14. Minio https://minio-k8s.ust.inc
