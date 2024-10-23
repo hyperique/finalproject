@@ -25,7 +25,8 @@
 
 `pdsh -w ^hosts -R ssh "lsmod | grep -i drbd"`
 
- ![image](https://github.com/user-attachments/assets/9347e017-9957-406a-a6a8-d20347f104e9)
+ ![image](https://github.com/user-attachments/assets/6993eabe-6c4c-4f0b-8752-e874d2b5753b)
+
 
 Убедимся, что он автоматически загружается при запуске:
 
@@ -52,13 +53,17 @@
 
 Теперь можно добавить к контролеру спутники, включая саму эту ноду:
 
-`linstor node create ust-k8s-core-linstor-node1 10.10.35.200
- linstor node create ust-k8s-core-linstor-node2 10.10.35.201
- linstor node create ust-k8s-core-linstor-node3 10.10.35.202
- linstor node create ust-k8s-shb-linstor-node1 10.10.75.200
- linstor node create ust-k8s-etp-linstor-node1 10.10.245.200`
+ ```
+  linstor node create ust-k8s-core-node1 10.10.35.11
+  linstor node create ust-k8s-core-node2 10.10.35.12
+  linstor node create ust-k8s-core-node3 10.10.35.13
+  linstor node create ust-k8s-shb-node1 10.10.75.11
+  linstor node create ust-k8s-etp-node1 10.10.245.11
 
- ![image](https://github.com/user-attachments/assets/ce8de472-a2d0-4460-a370-75db29cb614f)
+ ```
+
+ ![image](https://github.com/user-attachments/assets/9948fe76-ab3e-4e2e-9a2b-e6ff8e1abcdf)
+
 
 Проверим харды под линстор:
 
@@ -69,23 +74,25 @@
 
 `pdsh -w ^hosts -R ssh "vgcreate k8s /dev/sdb"`
 
-![image](https://github.com/user-attachments/assets/58520461-a90d-44e1-b33a-3bfb1e863151)
+![image](https://github.com/user-attachments/assets/fc382180-aee4-4e18-8fd4-b573b99bb719)
+
 
 
 Теперь создадим «тонкий» пул для thin provisioning (то есть возможности создавать тома больше доступного места, чтобы потом расширять хранилище по необходимости) и снапшотов:
 
-`pdsh -w ^hosts -R ssh "lvcreate -l 100%FREE --thinpool k8s/lvmthinpool"`
+`pdsh -w ^hosts -R ssh "lvcreate -l 100%FREE --thinpool k8s_ssd/lvmthinpool"`
 
-Пора создать пул хранилища на каждой ноде, так что на контроллере выполняем команду:
+Пора создать пул хранилища на каждой ноде. Сделаю это только для нод с SSD дисками в моем кластере. Так что на контроллере выполняем команду:
 
-`linstor storage-pool create lvmthin ust-k8s-core-linstor-node1 linstor-pool-hdd-all k8s/lvmthinpool
-linstor storage-pool create lvmthin ust-k8s-core-linstor-node2 linstor-pool-hdd-all k8s/lvmthinpool
-linstor storage-pool create lvmthin ust-k8s-core-linstor-node3 linstor-pool-hdd-all k8s/lvmthinpool
-linstor storage-pool create lvmthin ust-k8s-shb-linstor-node1 linstor-pool-hdd-all k8s/lvmthinpool
-linstor storage-pool create lvmthin ust-k8s-etp-linstor-node1 linstor-pool-hdd-all k8s/lvmthinpool`
+```
+linstor storage-pool create lvmthin ust-k8s-core-node1 k8s-ssd-pool k8s/lvmthinpool
+linstor storage-pool create lvmthin ust-k8s-core-node2 k8s-ssd-pool k8s/lvmthinpool
+linstor storage-pool create lvmthin ust-k8s-core-node3 k8s-ssd-pool k8s/lvmthinpool
+
+```
+![image](https://github.com/user-attachments/assets/c82d9dbf-c4fb-4bb8-98e6-c2cb4d9d0ed9)
 
 
-![image](https://github.com/user-attachments/assets/56a3804e-208e-45fa-b941-46577bab4cfa)
 
 
 
