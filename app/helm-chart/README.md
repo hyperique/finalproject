@@ -1,1 +1,0 @@
-Приложение развертывается через helm chart с помощью ArgoCD. В качестве image используются модифицированные образы, залитые в [dockerhub/hyperique](https://hub.docker.com/r/hyperique/hyperique). Настроена интеграция с consul service mesh.
