@@ -996,7 +996,7 @@ grafana:
   ##
   defaultDashboardsEditable: true
 
-  adminPassword: prom-operator
+  adminPassword: WinterIsComing
 
   rbac:
     ## If true, Grafana PSPs will be created
@@ -1114,10 +1114,7 @@ grafana:
         uid: alertmanager
         handleGrafanaManagedAlerts: false
         implementation: prometheus
-      loki:
-        enabled: true
-        name: Loki
-        uid: loki
+
         
   extraConfigmapMounts: []
   # - name: certs-configmap
@@ -1131,15 +1128,15 @@ grafana:
 
   ## Configure additional grafana datasources (passed through tpl)
   ## ref: http://docs.grafana.org/administration/provisioning/#datasources
-  #additionalDataSources:
-  #  - name: loki
-  #    access: proxy
-  #    url: http://loki-gateway.loki.svc.cluster.local/
-  #    type: loki
-  #    basicAuth: false
-  #    editable: true
-  #    version: 1
-  #    orgId: 1
+  additionalDataSources:
+    - name: loki-datasource
+      access: proxy
+      url: http://loki-gateway.logging.svc.ust.local/
+      type: loki
+      basicAuth: false
+      editable: true
+      version: 1
+      orgId: 1
   ## Passed to grafana subchart and used by servicemonitor below
   ##
   service:
