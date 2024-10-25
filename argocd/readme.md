@@ -4,7 +4,7 @@
 2. Автоматически синхронизирует изменения в репозитории
 3. Разворачивает в кластере новые версии приложений
 
-Приложение развернуто из helm чарта ArgoCD (https://github.com/argoproj/argo-helm/)
+Сервис развернут из helm чарта ArgoCD (https://github.com/argoproj/argo-helm/). Доступен по адресу: [argoCD-k8s.ust.inc](https://argocd-k8s.ust.inc/)
 
 `helm install argo-cd --namespace=argo-cd --create-namespace --values=argo-cd/valuescustom.yaml argo-cd/`
 
