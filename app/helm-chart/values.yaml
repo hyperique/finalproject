@@ -19,7 +19,7 @@
 images:
   repository: hyperique/hyperique
   # Overrides the image tag whose default is the chart appVersion.
-  tag: 0.6.0
+  tag: 0.7.0
 
 serviceAccounts:
   # Specifies whether service accounts should be created.
