@@ -95,7 +95,7 @@ spec:
     matchLabels:
       app: {{ .Values.adService.name }}
   endpoints:
-  - port: grpc
+  - port: http
     interval: 15s
     scrapeTimeout: 10s
 {{- if .Values.networkPolicies.create }}
