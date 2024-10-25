@@ -715,9 +715,7 @@ connectInject:
     defaultPrometheusScrapePath: "/metrics"
 
   envoyExtraArgs:
-    - '--enable-prometheus-stats=true'
-    - '--stats-sink-formatter=prometheus_text'
-    - '--prometheus-bind-addr=0.0.0.0:9102'
+  
 
   priorityClassName: ""
 

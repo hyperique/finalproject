@@ -1,4 +1,12 @@
-my-dashboard.json: |
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboards
+  namespace: monitoring
+  labels:
+    grafana_dashboard: "yes"
+data:
+  finaldashboard.json: |   
     {
       "annotations": {
         "list": [
@@ -19,10 +27,14 @@ my-dashboard.json: |
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 0,
-      "id": 1,
+      "id": 86,
       "links": [],
       "panels": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
           "gridPos": {
             "h": 1,
             "w": 24,
@@ -30,6 +42,15 @@ my-dashboard.json: |
             "y": 0
           },
           "id": 2,
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "refId": "A"
+            }
+          ],
           "title": "Pods",
           "type": "row"
         },
@@ -140,14 +161,14 @@ my-dashboard.json: |
                 "uid": "prometheus"
               },
               "editorMode": "code",
-              "expr": "count(kube_pod_status_phase{namespace=\"demo\", pod=~\"adservice.*\", phase=\"Running\"})",
+              "expr": "kube_deployment_status_replicas{namespace=\"demo\", deployment=\"checkoutservice\"}",
               "instant": false,
               "legendFormat": "__auto",
               "range": true,
               "refId": "A"
             }
           ],
-          "title": "adservice",
+          "title": "checkoutservice",
           "type": "timeseries"
         },
         {
@@ -167,7 +188,7 @@ my-dashboard.json: |
                 "axisColorMode": "text",
                 "axisLabel": "",
                 "axisPlacement": "auto",
-                "axisSoftMax": 2,
+                "axisSoftMax": 1,
                 "axisSoftMin": 0,
                 "barAlignment": 0,
                 "barWidthFactor": 0.6,
@@ -196,7 +217,6 @@ my-dashboard.json: |
                   "mode": "off"
                 }
               },
-              "fieldMinMax": false,
               "mappings": [
                 {
                   "options": {
@@ -258,14 +278,14 @@ my-dashboard.json: |
                 "uid": "prometheus"
               },
               "editorMode": "code",
-              "expr": "count(kube_pod_status_phase{namespace=\"demo\", pod=~\"cartservice.*\", phase=\"Running\"})",
+              "expr": "kube_deployment_status_replicas{namespace=\"demo\", deployment=\"adservice\"}",
               "instant": false,
               "legendFormat": "__auto",
               "range": true,
               "refId": "A"
             }
           ],
-          "title": "cartservice",
+          "title": "adservice",
           "type": "timeseries"
         },
         {
@@ -355,7 +375,7 @@ my-dashboard.json: |
             "x": 16,
             "y": 1
           },
-          "id": 5,
+          "id": 7,
           "options": {
             "legend": {
               "calcs": [],
@@ -375,14 +395,14 @@ my-dashboard.json: |
                 "uid": "prometheus"
               },
               "editorMode": "code",
-              "expr": "count(kube_pod_status_phase{namespace=\"demo\", pod=~\"checkoutservice.*\", phase=\"Running\"})",
+              "expr": "kube_deployment_status_replicas{namespace=\"demo\", deployment=\"recommendationservice\"}",
               "instant": false,
               "legendFormat": "__auto",
               "range": true,
               "refId": "A"
             }
           ],
-          "title": "checkoutservice",
+          "title": "recommendationservice",
           "type": "timeseries"
         },
         {
@@ -402,7 +422,7 @@ my-dashboard.json: |
                 "axisColorMode": "text",
                 "axisLabel": "",
                 "axisPlacement": "auto",
-                "axisSoftMax": 2,
+                "axisSoftMax": 1,
                 "axisSoftMin": 0,
                 "barAlignment": 0,
                 "barWidthFactor": 0.6,
@@ -431,7 +451,6 @@ my-dashboard.json: |
                   "mode": "off"
                 }
               },
-              "fieldMinMax": false,
               "mappings": [
                 {
                   "options": {
@@ -473,7 +492,7 @@ my-dashboard.json: |
             "x": 0,
             "y": 7
           },
-          "id": 1,
+          "id": 5,
           "options": {
             "legend": {
               "calcs": [],
@@ -493,7 +512,7 @@ my-dashboard.json: |
                 "uid": "prometheus"
               },
               "editorMode": "code",
-              "expr": "count(kube_pod_status_phase{namespace=\"demo\", pod=~\"frontend.*\", phase=\"Running\"})",
+              "expr": "kube_deployment_status_replicas{namespace=\"demo\", deployment=\"frontend\"}",
               "instant": false,
               "legendFormat": "__auto",
               "range": true,
@@ -610,14 +629,14 @@ my-dashboard.json: |
                 "uid": "prometheus"
               },
               "editorMode": "code",
-              "expr": "count(kube_pod_status_phase{namespace=\"demo\", pod=~\"emailservice.*\", phase=\"Running\"})",
+              "expr": "kube_deployment_status_replicas{namespace=\"demo\", deployment=\"productcatalogservice\"}",
               "instant": false,
               "legendFormat": "__auto",
               "range": true,
               "refId": "A"
             }
           ],
-          "title": "emailservice",
+          "title": "productcatalogservice",
           "type": "timeseries"
         },
         {
@@ -707,7 +726,7 @@ my-dashboard.json: |
             "x": 16,
             "y": 7
           },
-          "id": 8,
+          "id": 10,
           "options": {
             "legend": {
               "calcs": [],
@@ -727,7 +746,7 @@ my-dashboard.json: |
                 "uid": "prometheus"
               },
               "editorMode": "code",
-              "expr": "count(kube_pod_status_phase{namespace=\"demo\", pod=~\"paymentservice.*\", phase=\"Running\"})",
+              "expr": "kube_deployment_status_replicas{namespace=\"demo\", deployment=\"paymentservice\"}",
               "instant": false,
               "legendFormat": "__auto",
               "range": true,
@@ -824,7 +843,7 @@ my-dashboard.json: |
             "x": 0,
             "y": 13
           },
-          "id": 7,
+          "id": 8,
           "options": {
             "legend": {
               "calcs": [],
@@ -844,14 +863,14 @@ my-dashboard.json: |
                 "uid": "prometheus"
               },
               "editorMode": "code",
-              "expr": "count(kube_pod_status_phase{namespace=\"demo\", pod=~\"loadgenerator.*\", phase=\"Running\"})",
+              "expr": "kube_deployment_status_replicas{namespace=\"demo\", deployment=\"redis-cart\"}",
               "instant": false,
               "legendFormat": "__auto",
               "range": true,
               "refId": "A"
             }
           ],
-          "title": "loadgenerator",
+          "title": "redis-cart",
           "type": "timeseries"
         },
         {
@@ -941,7 +960,7 @@ my-dashboard.json: |
             "x": 8,
             "y": 13
           },
-          "id": 13,
+          "id": 9,
           "options": {
             "legend": {
               "calcs": [],
@@ -961,7 +980,7 @@ my-dashboard.json: |
                 "uid": "prometheus"
               },
               "editorMode": "code",
-              "expr": "count(kube_pod_status_phase{namespace=\"demo\", pod=~\"currencyservice.*\", phase=\"Running\"})",
+              "expr": "kube_deployment_status_replicas{namespace=\"demo\", deployment=\"currencyservice\"}",
               "instant": false,
               "legendFormat": "__auto",
               "range": true,
@@ -1058,7 +1077,7 @@ my-dashboard.json: |
             "x": 16,
             "y": 13
           },
-          "id": 12,
+          "id": 13,
           "options": {
             "legend": {
               "calcs": [],
@@ -1078,7 +1097,7 @@ my-dashboard.json: |
                 "uid": "prometheus"
               },
               "editorMode": "code",
-              "expr": "count(kube_pod_status_phase{namespace=\"demo\", pod=~\"shippingservice.*\", phase=\"Running\"})",
+              "expr": "kube_deployment_status_replicas{namespace=\"demo\", deployment=\"shippingservice\"}",
               "instant": false,
               "legendFormat": "__auto",
               "range": true,
@@ -1175,7 +1194,7 @@ my-dashboard.json: |
             "x": 0,
             "y": 19
           },
-          "id": 9,
+          "id": 11,
           "options": {
             "legend": {
               "calcs": [],
@@ -1195,14 +1214,14 @@ my-dashboard.json: |
                 "uid": "prometheus"
               },
               "editorMode": "code",
-              "expr": "count(kube_pod_status_phase{namespace=\"demo\", pod=~\"productcatalogservice.*\", phase=\"Running\"})",
+              "expr": "kube_deployment_status_replicas{namespace=\"demo\", deployment=\"emailservice\"}",
               "instant": false,
               "legendFormat": "__auto",
               "range": true,
               "refId": "A"
             }
           ],
-          "title": "productcatalogservice",
+          "title": "emailservice",
           "type": "timeseries"
         },
         {
@@ -1292,7 +1311,7 @@ my-dashboard.json: |
             "x": 8,
             "y": 19
           },
-          "id": 10,
+          "id": 12,
           "options": {
             "legend": {
               "calcs": [],
@@ -1312,131 +1331,14 @@ my-dashboard.json: |
                 "uid": "prometheus"
               },
               "editorMode": "code",
-              "expr": "count(kube_pod_status_phase{namespace=\"demo\", pod=~\"recommendationservice.*\", phase=\"Running\"})",
+              "expr": "kube_deployment_status_replicas{namespace=\"demo\", deployment=\"cartservice\"}",
               "instant": false,
               "legendFormat": "__auto",
               "range": true,
               "refId": "A"
             }
           ],
-          "title": "recommendationservice",
-          "type": "timeseries"
-        },
-        {
-          "datasource": {
-            "default": true,
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "continuous-RdYlGr"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "axisSoftMax": 1,
-                "axisSoftMin": 0,
-                "barAlignment": 0,
-                "barWidthFactor": 0.6,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "scheme",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "linear",
-                "lineWidth": 5,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "auto",
-                "spanNulls": true,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "mappings": [
-                {
-                  "options": {
-                    "0": {
-                      "color": "red",
-                      "index": 0,
-                      "text": "DOWN [0]"
-                    },
-                    "1": {
-                      "color": "green",
-                      "index": 1,
-                      "text": "UP [1]"
-                    },
-                    "2": {
-                      "color": "green",
-                      "index": 2,
-                      "text": "UP [2]"
-                    }
-                  },
-                  "type": "value"
-                }
-              ],
-              "noValue": "0",
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 6,
-            "w": 8,
-            "x": 16,
-            "y": 19
-          },
-          "id": 11,
-          "options": {
-            "legend": {
-              "calcs": [],
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "tooltip": {
-              "mode": "single",
-              "sort": "none"
-            }
-          },
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "prometheus"
-              },
-              "editorMode": "code",
-              "expr": "count(kube_pod_status_phase{namespace=\"demo\", pod=~\"redis-cart.*\", phase=\"Running\"})",
-              "instant": false,
-              "legendFormat": "__auto",
-              "range": true,
-              "refId": "A"
-            }
-          ],
-          "title": "redis-cart",
+          "title": "cartservice",
           "type": "timeseries"
         }
       ],
@@ -1446,13 +1348,13 @@ my-dashboard.json: |
         "list": []
       },
       "time": {
-        "from": "now-24h",
+        "from": "now-6h",
         "to": "now"
       },
       "timepicker": {},
-      "timezone": "browser",
-      "title": "hyperique-dashboard",
-      "uid": "fe0940cnmeh34a",
+      "timezone": "",
+      "title": "finalproject",
+      "uid": "ce1x6zrm0w9hcb",
       "version": 1,
       "weekStart": ""
-    }
+    }         

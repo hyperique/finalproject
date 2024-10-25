@@ -1,0 +1,14 @@
+project: default
+source:
+  repoURL: git@github.com:hyperique/finalproject.git
+  path: app/helm-chart
+  targetRevision: HEAD
+  helm:
+    valueFiles:
+      - values.yaml
+destination:
+  server: https://10.10.35.10:6443
+  namespace: demo
+syncPolicy:
+  automated:
+    prune: true
