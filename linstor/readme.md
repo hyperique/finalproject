@@ -107,3 +107,6 @@ linstor storage-pool create lvmthin ust-k8s-core-node3 k8s-ssd-pool k8s/lvmthinp
 
 ![image](https://github.com/user-attachments/assets/835af33c-c672-45fd-91dc-3702e35519e9)
 
+Так же линстор имеет свой удобный графический интерфейс:
+
+![alt text](image.png)
