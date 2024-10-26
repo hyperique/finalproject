@@ -1,0 +1,61 @@
+all:
+  hosts:
+    ust-k8s-master1:
+      ansible_host: 10.10.35.10
+      ip: 10.10.35.10
+      access_ip: 10.10.35.10
+    ust-k8s-core-node1:
+      ansible_host: 10.10.35.11
+      ip: 10.10.35.11
+      access_ip: 10.10.35.11
+    ust-k8s-core-node2:
+      ansible_host: 10.10.35.12
+      ip: 10.10.35.12
+      access_ip: 10.10.35.12
+    ust-k8s-core-node3:
+      ansible_host: 10.10.35.13
+      ip: 10.10.35.13
+      access_ip: 10.10.35.13
+    ust-k8s-etp-master2:
+      ansible_host: 10.10.245.10
+      ip: 10.10.245.10
+      access_ip: 10.10.245.10
+    ust-k8s-etp-node1:
+      ansible_host: 10.10.245.11
+      ip: 10.10.245.11
+      access_ip: 10.10.245.11
+    ust-k8s-shb-master3:
+      ansible_host: 10.10.75.10
+      ip: 10.10.75.10
+      access_ip: 10.10.75.10
+    ust-k8s-shb-node1:
+      ansible_host: 10.10.75.11
+      ip: 10.10.75.11
+      access_ip: 10.10.75.11
+  children:
+    kube_control_plane:
+      hosts:
+        ust-k8s-master1:
+        ust-k8s-etp-master2:
+        ust-k8s-shb-master3:
+    kube_node:
+      hosts:
+        ust-k8s-master1:
+        ust-k8s-core-node1:
+        ust-k8s-core-node2:
+        ust-k8s-core-node3:
+        ust-k8s-etp-master2:
+        ust-k8s-etp-node1:
+        ust-k8s-shb-master3:
+        ust-k8s-shb-node1:
+    etcd:
+      hosts:
+        ust-k8s-master1:
+        ust-k8s-etp-master2:
+        ust-k8s-shb-master3:
+    k8s_cluster:
+      children:
+        kube_control_plane:
+        kube_node:
+    calico_rr:
+      hosts: {}
