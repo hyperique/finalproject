@@ -161,7 +161,7 @@ data:
                 "uid": "prometheus"
               },
               "editorMode": "code",
-              "expr": "kube_deployment_status_replicas{namespace=\"demo\", deployment=\"checkoutservice\"}",
+              "expr": "kube_deployment_status_replicas_available{namespace=\"demo\", deployment=\"checkoutservice\"}",
               "instant": false,
               "legendFormat": "__auto",
               "range": true,
@@ -278,7 +278,7 @@ data:
                 "uid": "prometheus"
               },
               "editorMode": "code",
-              "expr": "kube_deployment_status_replicas{namespace=\"demo\", deployment=\"adservice\"}",
+              "expr": "kube_deployment_status_replicas_available{namespace=\"demo\", deployment=\"adservice\"}",
               "instant": false,
               "legendFormat": "__auto",
               "range": true,
@@ -395,7 +395,7 @@ data:
                 "uid": "prometheus"
               },
               "editorMode": "code",
-              "expr": "kube_deployment_status_replicas{namespace=\"demo\", deployment=\"recommendationservice\"}",
+              "expr": "kube_deployment_status_replicas_available{namespace=\"demo\", deployment=\"recommendationservice\"}",
               "instant": false,
               "legendFormat": "__auto",
               "range": true,
@@ -512,7 +512,7 @@ data:
                 "uid": "prometheus"
               },
               "editorMode": "code",
-              "expr": "kube_deployment_status_replicas{namespace=\"demo\", deployment=\"frontend\"}",
+              "expr": "kube_deployment_status_replicas_available{namespace=\"demo\", deployment=\"frontend\"}",
               "instant": false,
               "legendFormat": "__auto",
               "range": true,
@@ -629,7 +629,7 @@ data:
                 "uid": "prometheus"
               },
               "editorMode": "code",
-              "expr": "kube_deployment_status_replicas{namespace=\"demo\", deployment=\"productcatalogservice\"}",
+              "expr": "kube_deployment_status_replicas_available{namespace=\"demo\", deployment=\"productcatalogservice\"}",
               "instant": false,
               "legendFormat": "__auto",
               "range": true,
@@ -746,7 +746,7 @@ data:
                 "uid": "prometheus"
               },
               "editorMode": "code",
-              "expr": "kube_deployment_status_replicas{namespace=\"demo\", deployment=\"paymentservice\"}",
+              "expr": "kube_deployment_status_replicas_available{namespace=\"demo\", deployment=\"paymentservice\"}",
               "instant": false,
               "legendFormat": "__auto",
               "range": true,
@@ -863,7 +863,7 @@ data:
                 "uid": "prometheus"
               },
               "editorMode": "code",
-              "expr": "kube_deployment_status_replicas{namespace=\"demo\", deployment=\"redis-cart\"}",
+              "expr": "kube_deployment_status_replicas_available{namespace=\"demo\", deployment=\"redis-cart\"}",
               "instant": false,
               "legendFormat": "__auto",
               "range": true,
@@ -980,7 +980,7 @@ data:
                 "uid": "prometheus"
               },
               "editorMode": "code",
-              "expr": "kube_deployment_status_replicas{namespace=\"demo\", deployment=\"currencyservice\"}",
+              "expr": "kube_deployment_status_replicas_available{namespace=\"demo\", deployment=\"currencyservice\"}",
               "instant": false,
               "legendFormat": "__auto",
               "range": true,
@@ -1097,7 +1097,7 @@ data:
                 "uid": "prometheus"
               },
               "editorMode": "code",
-              "expr": "kube_deployment_status_replicas{namespace=\"demo\", deployment=\"shippingservice\"}",
+              "expr": "kube_deployment_status_replicas_available{namespace=\"demo\", deployment=\"shippingservice\"}",
               "instant": false,
               "legendFormat": "__auto",
               "range": true,
@@ -1214,7 +1214,7 @@ data:
                 "uid": "prometheus"
               },
               "editorMode": "code",
-              "expr": "kube_deployment_status_replicas{namespace=\"demo\", deployment=\"emailservice\"}",
+              "expr": "kube_deployment_status_replicas_available{namespace=\"demo\", deployment=\"emailservice\"}",
               "instant": false,
               "legendFormat": "__auto",
               "range": true,
@@ -1331,7 +1331,7 @@ data:
                 "uid": "prometheus"
               },
               "editorMode": "code",
-              "expr": "kube_deployment_status_replicas{namespace=\"demo\", deployment=\"cartservice\"}",
+              "expr": "kube_deployment_status_replicas_available{namespace=\"demo\", deployment=\"cartservice\"}",
               "instant": false,
               "legendFormat": "__auto",
               "range": true,
@@ -1353,7 +1353,7 @@ data:
       },
       "timepicker": {},
       "timezone": "",
-      "title": "finalproject",
+      "title": "finalproject_dashboard",
       "uid": "ce1x6zrm0w9hcb",
       "version": 1,
       "weekStart": ""

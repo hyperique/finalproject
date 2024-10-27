@@ -191,13 +191,196 @@ defaultRules:
 
 ## Provide custom recording or alerting rules to be deployed into the cluster.
 ##
-additionalPrometheusRulesMap: {}
-#  rule-name:
+#additionalPrometheusRulesMap: 
+#  rule-name: 
 #    groups:
-#    - name: my_group
+#    - orgId: 1
+#      name: servicecheck
+#      folder: servicescheck
+#      interval: 1m
 #      rules:
-#      - record: my_record
-#        expr: 100 * my_record
+#        - uid: ae20wn4nzz18gb
+#          title: emailservice-alert
+#          condition: C
+#          data:
+#            - refId: A
+#              relativeTimeRange:
+#                from: 10
+#                to: 0
+#              datasourceUid: prometheus
+#              model:
+#                datasource:
+#                    type: prometheus
+#                    uid: prometheus
+#                editorMode: code
+#                expr: sum(kube_deployment_status_replicas_available{namespace="demo", deployment="emailservice"})
+#                instant: false
+#                interval: ""
+#                intervalMs: 30000
+#                legendFormat: __auto
+#                maxDataPoints: 43200
+#                range: true
+#                refId: A
+#            - refId: B
+#              relativeTimeRange:
+#                from: 10
+#                to: 0
+#              datasourceUid: __expr__
+#              model:
+#                conditions:
+#                    - evaluator:
+#                        params: []
+#                        type: gt
+#                      operator:
+#                        type: and
+#                      query:
+#                        params:
+#                            - B
+#                      reducer:
+#                        params: []
+#                        type: last
+#                      type: query
+#                datasource:
+#                    type: __expr__
+#                    uid: __expr__
+#                expression: A
+#                intervalMs: 1000
+#                maxDataPoints: 43200
+#                reducer: last
+#                refId: B
+#                type: reduce
+#            - refId: C
+#              relativeTimeRange:
+#                from: 10
+#                to: 0
+#              datasourceUid: __expr__
+#              model:
+#                conditions:
+#                    - evaluator:
+#                        params:
+#                            - 1
+#                        type: lt
+#                      operator:
+#                        type: and
+#                      query:
+#                        params:
+#                            - C
+#                      reducer:
+#                        params: []
+#                        type: last
+#                      type: query
+#                datasource:
+#                    type: __expr__
+#                    uid: __expr__
+#                expression: B
+#                intervalMs: 1000
+#                maxDataPoints: 43200
+#                refId: C
+#                type: threshold
+#          dashboardUid: ce1x6zrm0w9hcb
+#          panelId: 11
+#          noDataState: NoData
+#          execErrState: Error
+#          for: 0s
+#          annotations:
+#            __dashboardUid__: ce1x6zrm0w9hcb
+#            __panelId__: "11"
+#            summary: Email service problem!
+#          isPaused: false
+#          notification_settings:
+#            receiver: telegram
+#        - uid: fe21gsryoeb5sc
+#          title: checkoutservice-alert
+#          condition: C
+#          data:
+#            - refId: A
+#              relativeTimeRange:
+#                from: 10
+#                to: 0
+#              datasourceUid: prometheus
+#              model:
+#                datasource:
+#                    type: prometheus
+#                    uid: prometheus
+#                editorMode: code
+#                expr: sum(kube_deployment_status_replicas_available{namespace="demo", deployment="checkoutservice"})
+#                instant: false
+#                interval: ""
+#                intervalMs: 30000
+#                legendFormat: __auto
+#                maxDataPoints: 43200
+#                range: true
+#                refId: A
+#            - refId: B
+#              relativeTimeRange:
+#                from: 10
+#                to: 0
+#              datasourceUid: __expr__
+#              model:
+#                conditions:
+#                    - evaluator:
+#                        params: []
+#                        type: gt
+#                      operator:
+#                        type: and
+#                      query:
+#                        params:
+#                            - B
+#                      reducer:
+#                        params: []
+#                        type: last
+#                      type: query
+#                datasource:
+#                    type: __expr__
+#                    uid: __expr__
+#                expression: A
+#                intervalMs: 1000
+#                maxDataPoints: 43200
+#                reducer: last
+#                refId: B
+#                type: reduce
+#            - refId: C
+#              relativeTimeRange:
+#                from: 10
+#                to: 0
+#              datasourceUid: __expr__
+#              model:
+#                conditions:
+#                    - evaluator:
+#                        params:
+#                            - 1
+#                        type: lt
+#                      operator:
+#                        type: and
+#                      query:
+#                        params:
+#                            - C
+#                      reducer:
+#                        params: []
+#                        type: last
+#                      type: query
+#                datasource:
+#                    type: __expr__
+#                    uid: __expr__
+#                expression: B
+#                intervalMs: 1000
+#                maxDataPoints: 43200
+#                refId: C
+#                type: threshold
+#          dashboardUid: ce1x6zrm0w9hcb
+#          panelId: 3
+#          noDataState: NoData
+#          execErrState: Error
+#          for: 0s
+#          annotations:
+#            __dashboardUid__: ce1x6zrm0w9hcb
+#            __panelId__: "3"
+#            summary: Checkout service problem!
+#          labels: {}
+#          isPaused: false
+#          notification_settings:
+#            receiver: telegram
+
 
 ##
 global:
@@ -1055,13 +1238,13 @@ grafana:
       labelValue: "yes"
       # Allow discovery in all namespaces for dashboards
       searchNamespace: monitoring
-    notifiers:
-      enabled: true
-      label: grafana_alert
-      labelValue: "yes"
-      searchNamespace: monitoring  
-      # Support for new table panels, when enabled grafana auto migrates the old table panels to newer table panels
-      enableNewTablePanelSyntax: false
+    #notifiers:
+    #  enabled: true
+    #  label: grafana_alert
+    #  labelValue: "yes"
+    #  searchNamespace: monitoring  
+    #  # Support for new table panels, when enabled grafana auto migrates the old table panels to newer table panels
+    #  enableNewTablePanelSyntax: false
 
       ## Annotations for Grafana dashboard configmaps
       ##
@@ -1073,10 +1256,22 @@ grafana:
           enabled: false
       provider:
         allowUiUpdates: false
+    alerts:
+      enabled: true
+      label: grafana_alert
+      labelValue: "yes"
+      searchNamespace: monitoring
     datasources:
       enabled: true
       defaultDatasourceEnabled: true
       isDefaultDatasource: true
+    
+    #notifier:
+    #  enabled: true    
+    #  label: grafana_notifier
+    #  labelValue: "yes"
+    #  searchNamespace: monitoring
+      
 
       name: Prometheus
       uid: prometheus

@@ -9,7 +9,7 @@ Datasources для grafana:
 
 ![alt text]({FCDE381C-D2F0-496D-BE01-4C2AF557759D}.png)
 
-В grafana создан кастомный dashboard для наблюдения за состоянием deployments микросервисов (dashboard.yaml). В нем выведена метрика kube_deployment_status_replicas. В случае падения одного из микросервисов мы это увидим на графике dashboard. Так же для каждого сервиса настроен alert (alertrules.yaml), который в случае отутствия активных реплик в deployment проинформирует об этом в telegram канал. 
+В grafana создан кастомный dashboard для наблюдения за состоянием deployments микросервисов (dashboard.yaml). В нем выведена метрика kube_deployment_status_replicas_available. В случае падения одного из микросервисов мы это увидим на графике dashboard. Так же для каждого сервиса настроен alert (alertrules.yaml), который в случае отутствия активных реплик в deployment проинформирует об этом в telegram канал. 
 
 ![alt text]({77D03ED9-D624-464F-9EB8-10C1EBC94FF9}.png)
 
