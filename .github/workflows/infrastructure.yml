@@ -66,7 +66,10 @@ jobs:
           # Установка MinIO Operator
           helm upgrade --install --namespace minio-operator --create-namespace --values=minio/operator/values.yaml minio-operator minio-operator/operator
           kubectl rollout status deployment/minio-operator -n minio-operator
-
+          
+          # Ожидание после установки оператора
+          sleep 30
+          
           # Создание namespace для MinIO, если он ещё не создан
           kubectl create namespace minio || true
 
