@@ -32,7 +32,7 @@ jobs:
           git clone --branch main https://github.com/hyperique/finalproject.git . || git pull
 
           # Выполнить команды установки и конфигурации
-          helm upgrade --install metallb metallb/metallb --namespace=metallb --values=metallb/values.yaml
+          helm upgrade --install metallb metallb/metallb --namespace=metallb --create-namespace --values=metallb/values.yaml
           kubectl apply -f metallb/ippool.yaml
         EOF
 
