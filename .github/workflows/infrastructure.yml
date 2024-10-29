@@ -32,6 +32,11 @@ jobs:
           helm repo add metallb https://metallb.github.io/metallb --force-update
           helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx --force-update
           helm repo add jetstack https://charts.jetstack.io --force-update
+          helm repo add minio-operator https://operator.min.io --force-update
+          helm repo add nfs-subdir-external-provisioner https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner --force-update
+
+          # Обновление локального кеша репозиториев Helm
+          helm repo update
 
           # Установка MetalLB с созданием namespace
           helm upgrade --install metallb metallb/metallb --namespace=metallb --create-namespace --values=metallb/values.yaml
@@ -43,12 +48,24 @@ jobs:
 
           # Установка Cert-Manager
           helm install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --version v1.15.3 --set crds.enabled=true
+
+          # Ожидание готовности cert-manager
           kubectl rollout status deployment/cert-manager -n cert-manager
           kubectl rollout status deployment/cert-manager-webhook -n cert-manager
           kubectl rollout status deployment/cert-manager-cainjector -n cert-manager
 
           # Применение ClusterIssuer
-          kubectl apply -f clusterissuer/clusterissuer.yaml
-          
-          
+          kubectl apply -f certmanager/clusterissuer.yaml
+
+          # Установка NFS Subdir External Provisioner
+          helm upgrade --install nfs-subdir-external-provisioner nfs-subdir-external-provisioner/nfs-subdir-external-provisioner \
+            --set nfs.server=10.10.35.150 \
+            --set nfs.path=/nfs
+
+          # Установка MinIO Operator
+          helm upgrade --install --namespace minio-operator --create-namespace --values=minio/operator/values.yaml minio-operator minio-operator/operator
+          kubectl rollout status deployment/minio-operator -n minio-operator
+
+          # Установка MinIO Tenant
+          helm upgrade --install --namespace minio --create-namespace --values=minio/values.yaml minio-k8s minio-operator/tenant
         EOF
