@@ -33,6 +33,10 @@ jobs:
 
           # Выполнить команды установки и конфигурации
           helm upgrade --install metallb metallb/metallb --namespace=metallb --create-namespace --values=metallb/values.yaml
+          
+          # Ожидать, пока deployment metallb-controller не станет доступным
+          kubectl rollout status deployment/metallb-controller -n metallb
+          
           kubectl apply -f metallb/ippool.yaml
         EOF
 
