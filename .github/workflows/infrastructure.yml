@@ -1,0 +1,40 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Install SSH Client
+      run: sudo apt-get install -y ssh
+
+    - name: Setup SSH
+      uses: webfactory/ssh-agent@v0.5.4
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: Connect to Server and Execute Commands
+      run: |
+        ssh -o StrictHostKeyChecking=no -p 55522 k8s@93.85.93.70 << 'EOF'
+          # Создать каталог, если его не существует
+          mkdir -p ~/projects/k8s-finalproject
+
+          # Перейти в каталог и клонировать репозиторий
+          cd ~/projects/k8s-finalproject
+          git clone --branch main https://github.com/hyperique/finalproject.git . || git pull
+
+          # Выполнить команды установки и конфигурации
+          helm upgrade --install metallb metallb/metallb --namespace=metallb --values=metallb/values.yaml
+          kubectl apply -f metallb/ippool.yaml
+        EOF
+
+    - name: Clean up
+      run: echo "Deployment process completed."
