@@ -112,7 +112,7 @@ jobs:
           kubectl apply -f argocd/argoingress.yaml
 
           # Установка Consul
-          helm upgrade --install consul consul/chart --namespace=consul --create-namespace --values=consul/consulvalues.yaml
+         # helm upgrade --install consul consul/chart --namespace=consul --create-namespace --values=consul/consulvalues.yaml
 
           # Ожидание готовности Consul
           # kubectl rollout status statefulset/consul-server -n consul
