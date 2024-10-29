@@ -467,10 +467,10 @@ ingress:
     annotations: 
        kubernetes.io/ingress.class: "nginx"
        cert-manager.io/cluster-issuer: "letsencrypt-k8s"
-       nginx.ingress.kubernetes.io/cors-allow-headers: Content-Type, authorization
-       nginx.ingress.kubernetes.io/cors-allow-methods: PUT, GET, POST, OPTIONS
-       nginx.ingress.kubernetes.io/cors-allow-origin: https://minio-k8s.ust.inc
-       nginx.ingress.kubernetes.io/enable-cors: 'true'
+       #nginx.ingress.kubernetes.io/cors-allow-headers: Content-Type, authorization
+       #nginx.ingress.kubernetes.io/cors-allow-methods: PUT, GET, POST, OPTIONS
+       #nginx.ingress.kubernetes.io/cors-allow-origin: https://minio-k8s.ust.inc
+       #nginx.ingress.kubernetes.io/enable-cors: 'true'
     tls: 
       - secretName: minio-tls-secret
     #   hosts:
@@ -487,10 +487,10 @@ ingress:
     annotations:
        kubernetes.io/ingress.class: "nginx"
        cert-manager.io/cluster-issuer: "letsencrypt-k8s"
-       nginx.ingress.kubernetes.io/proxy-ssl-verify: "off"
+       #nginx.ingress.kubernetes.io/proxy-ssl-verify: "off"
        #nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-       nginx.ingress.kubernetes.io/rewrite-target: /
-       nginx.ingress.kubernetes.io/proxy-body-size: "0"
+       #nginx.ingress.kubernetes.io/rewrite-target: /
+       #nginx.ingress.kubernetes.io/proxy-body-size: "0"
       # nginx.ingress.kubernetes.io/server-snippet: |
       #   client_max_body_size 0;
       # nginx.ingress.kubernetes.io/configuration-snippet: |
