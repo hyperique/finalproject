@@ -3994,7 +3994,7 @@ prometheus:
     
       volumeClaimTemplate:
         spec:
-          storageClassName: linstor-csi-lvm-thin-ssd
+          storageClassName: nfs-client
           accessModes: ["ReadWriteOnce"]
           resources:
             requests:
