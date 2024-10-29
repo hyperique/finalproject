@@ -1,9 +1,7 @@
 name: Deploy to Server
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:  # Ручной запуск через интерфейс GitHub
 
 jobs:
   deploy:
@@ -98,8 +96,9 @@ jobs:
           # Ожидание готовности Argo CD
           kubectl rollout status deployment/argo-cd-server -n argo-cd
 
-          # Применение секрет для Argo CD
+          # Применение секретов для Argo CD
           kubectl apply -f ~/projects/secrets/argorepo.yaml -n argo-cd
+          kubectl apply -f ~/projects/secrets/argocluster.yaml -n argo-cd
 
           # Применение Argo CD манифестов
           kubectl apply -f argocd/app.yaml
