@@ -91,10 +91,10 @@ jobs:
           helm upgrade --install promtail grafana/promtail --namespace=monitoring --values=monitoring/promtail/values.yaml
 
           # Установка Argo CD
-          helm upgrade --install argo-cd argo-cd/argo-cd --namespace=argo-cd --create-namespace --values=argo-cd/valuescustom.yaml
+          helm upgrade --install argo-cd argo-cd/argo-cd --namespace=argo-cd --create-namespace --values=argocd/valuescustom.yaml
 
           # Ожидание готовности Argo CD
-          kubectl rollout status deployment/argo-cd-server -n argo-cd
+          kubectl rollout status deployment/argo-cd-argocd-server -n argo-cd
 
           # Применение секретов для Argo CD
           kubectl apply -f ~/projects/secrets/argorepo.yaml -n argo-cd
@@ -107,7 +107,7 @@ jobs:
           helm upgrade --install consul consul/chart --namespace=consul --create-namespace --values=consul/consulvalues.yaml
 
           # Ожидание готовности Consul
-          kubectl rollout status deployment/consul-server -n consul
+          kubectl rollout status statefulset/consul-server -n consul
 
           # Применение Consul Ingress
           kubectl apply -f consul/consulingress.yaml
