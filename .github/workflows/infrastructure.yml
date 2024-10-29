@@ -1,0 +1,110 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4  # Используется последняя версия
+
+    - name: Install SSH Client
+      run: sudo apt-get install -y ssh
+
+    - name: Setup SSH
+      uses: webfactory/ssh-agent@v0.9.0  # Используем последнюю версию
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: Connect to Server and Execute Commands
+      run: |
+        ssh -o StrictHostKeyChecking=no -p 55522 k8s@93.85.93.70 << 'EOF'
+          mkdir -p ~/projects/k8s-finalproject
+          cd ~/projects/k8s-finalproject
+          git clone --branch main https://github.com/hyperique/finalproject.git . || git pull
+
+          # Добавление репозиториев Helm
+          helm repo add metallb https://metallb.github.io/metallb --force-update
+          helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx --force-update
+          helm repo add jetstack https://charts.jetstack.io --force-update
+          helm repo add minio-operator https://operator.min.io --force-update
+          helm repo add nfs-subdir-external-provisioner https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner --force-update
+          helm repo add grafana https://grafana.github.io/helm-charts --force-update
+          helm repo add prometheus-community https://prometheus-community.github.io/helm-charts --force-update
+          helm repo add argo-cd https://argoproj.github.io/argo-helm --force-update
+
+          # Обновление локального кеша репозиториев Helm
+          helm repo update
+
+          # Установка MetalLB с созданием namespace
+          helm upgrade --install metallb metallb/metallb --namespace=metallb --create-namespace --values=metallb/values.yaml
+          kubectl rollout status deployment/metallb-controller -n metallb
+          kubectl apply -f metallb/ippool.yaml
+
+          # Установка Ingress NGINX с созданием namespace
+          helm install ingress-nginx ingress-nginx/ingress-nginx --version 4.11.3 --namespace=ingress-nginx --create-namespace --values=ingress-nginx/values.yaml
+
+          # Установка Cert-Manager
+          helm install cert-manager jetstack/cert-manager --namespace=cert-manager --create-namespace --version v1.15.3 --set crds.enabled=true
+
+          # Ожидание готовности cert-manager
+          kubectl rollout status deployment/cert-manager -n cert-manager
+          kubectl rollout status deployment/cert-manager-webhook -n cert-manager
+          kubectl rollout status deployment/cert-manager-cainjector -n cert-manager
+
+          # Применение ClusterIssuer
+          kubectl apply -f certmanager/clusterissuer.yaml
+
+          # Установка NFS Subdir External Provisioner
+          helm upgrade --install nfs-subdir-external-provisioner nfs-subdir-external-provisioner/nfs-subdir-external-provisioner \
+            --set nfs.server=10.10.35.150 \
+            --set nfs.path=/nfs
+
+          # Установка MinIO Operator
+          helm upgrade --install --namespace minio-operator --create-namespace --values=minio/operator/values.yaml minio-operator minio-operator/operator
+          kubectl rollout status deployment/minio-operator -n minio-operator
+
+          # Создание namespace для MinIO, если он ещё не создан
+          kubectl create namespace minio || true
+
+          # Применение secret для MinIO
+          kubectl apply -f ~/projects/secrets/minioenv.yaml -n minio
+
+          # Установка MinIO Tenant
+          helm upgrade --install --namespace minio --create-namespace --values=minio/values.yaml minio-k8s minio-operator/tenant
+
+          # Создание namespace для мониторинга
+          kubectl create namespace monitoring || true 
+
+          # Установка Grafana и Prometheus
+          kubectl apply -f monitoring/grafana/dashboard.yaml
+          kubectl apply -f monitoring/grafana/alertrules.yaml
+          helm upgrade --install monitoring prometheus-community/kube-prometheus-stack --namespace=monitoring --create-namespace --values=monitoring/grafana/values.yaml
+
+          # Установка Loki
+          helm upgrade --install loki grafana/loki --namespace=logging --create-namespace --values=monitoring/loki/values.yaml
+
+          # Установка Promtail
+          helm upgrade --install promtail grafana/promtail --namespace=monitoring --values=monitoring/promtail/values.yaml
+
+          # Установка Argo CD
+          helm upgrade --install argo-cd argo-cd/argo-cd --namespace=argo-cd --create-namespace --values=argocd/valuescustom.yaml
+
+          # Ожидание готовности Argo CD
+          kubectl rollout status deployment/argo-cd-server -n argo-cd
+
+          # Применение секрет для Argo CD
+          kubectl apply -f ~/projects/secrets/argorepo.yaml -n argo-cd
+
+          # Применение Argo CD манифестов
+          kubectl apply -f argocd/app.yaml
+          kubectl apply -f argocd/argoingress.yaml
+        EOF
+
+    - name: Clean up
+      run: echo "Infrastructure deployment process completed."
