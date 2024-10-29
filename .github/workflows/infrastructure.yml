@@ -11,13 +11,13 @@ jobs:
 
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v4 
+      uses: actions/checkout@v4  # Используется последняя версия
 
     - name: Install SSH Client
       run: sudo apt-get install -y ssh
 
     - name: Setup SSH
-      uses: webfactory/ssh-agent@v0.9.0  
+      uses: webfactory/ssh-agent@v0.9.0  # Используем последнюю версию
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
@@ -28,11 +28,11 @@ jobs:
           cd ~/projects/k8s-finalproject
           git clone --branch main https://github.com/hyperique/finalproject.git . || git pull
 
-          # Установка MetalLB
-          helm upgrade --install metallb metallb/metallb --namespace=metallb --values=metallb/values.yaml
+          # Установка MetalLB с созданием namespace
+          helm upgrade --install metallb metallb/metallb --namespace=metallb --create-namespace --values=metallb/values.yaml
           kubectl rollout status deployment/metallb-controller -n metallb
           kubectl apply -f metallb/ippool.yaml
 
-          # Установка Ingress NGINX
+          # Установка Ingress NGINX с созданием namespace
           helm install ingress-nginx ingress-nginx/ingress-nginx --version 4.11.3 --namespace=ingress-nginx --create-namespace --values=ingress-nginx/values.yaml
         EOF
