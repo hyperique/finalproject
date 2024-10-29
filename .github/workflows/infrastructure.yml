@@ -51,9 +51,9 @@ jobs:
           helm install cert-manager jetstack/cert-manager --namespace=cert-manager --create-namespace --version v1.15.3 --set crds.enabled=true
 
           # Ожидание готовности cert-manager
-          kubectl rollout status deployment/cert-manager -n cert-manager
-          kubectl rollout status deployment/cert-manager-webhook -n cert-manager
-          kubectl rollout status deployment/cert-manager-cainjector -n cert-manager
+          #kubectl rollout status deployment/cert-manager -n cert-manager
+          #kubectl rollout status deployment/cert-manager-webhook -n cert-manager
+          #kubectl rollout status deployment/cert-manager-cainjector -n cert-manager
 
           # Применение ClusterIssuer
           kubectl apply -f certmanager/clusterissuer.yaml
@@ -115,10 +115,10 @@ jobs:
           helm upgrade --install consul consul/chart --namespace=consul --create-namespace --values=consul/consulvalues.yaml
 
           # Ожидание готовности Consul
-          kubectl rollout status statefulset/consul-server -n consul
+          # kubectl rollout status statefulset/consul-server -n consul
 
           # Применение Consul Ingress
-          kubectl apply -f consul/consulingress.yaml
+          #kubectl apply -f consul/consulingress.yaml
 
           # Применение Argo CD app манифестов после развертывания Consul
           kubectl apply -f argocd/app.yaml
