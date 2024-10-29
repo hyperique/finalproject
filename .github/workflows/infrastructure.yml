@@ -34,6 +34,7 @@ jobs:
           helm repo add jetstack https://charts.jetstack.io --force-update
           helm repo add minio-operator https://operator.min.io --force-update
           helm repo add nfs-subdir-external-provisioner https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner --force-update
+          helm repo add grafana https://grafana.github.io/helm-charts --force-update
 
           # Обновление локального кеша репозиториев Helm
           helm repo update
@@ -47,7 +48,7 @@ jobs:
           helm install ingress-nginx ingress-nginx/ingress-nginx --version 4.11.3 --namespace=ingress-nginx --create-namespace --values=ingress-nginx/values.yaml
 
           # Установка Cert-Manager
-          helm install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --version v1.15.3 --set crds.enabled=true
+          helm install cert-manager jetstack/cert-manager --namespace=cert-manager --create-namespace --version v1.15.3 --set crds.enabled=true
 
           # Ожидание готовности cert-manager
           kubectl rollout status deployment/cert-manager -n cert-manager
@@ -68,4 +69,21 @@ jobs:
 
           # Установка MinIO Tenant
           helm upgrade --install --namespace minio --create-namespace --values=minio/values.yaml minio-k8s minio-operator/tenant
+
+          # Создание namespace для мониторинга
+          kubectl create namespace monitoring || true  # Игнорируем ошибку, если namespace уже существует
+
+          # Установка Grafana и Prometheus
+          kubectl apply -f monitoring/grafana/dashboard.yaml
+          kubectl apply -f monitoring/grafana/alertrules.yaml
+          helm upgrade --install monitoring prometheus-community/kube-prometheus-stack --namespace=monitoring --create-namespace --values=monitoring/grafana/values.yaml
+
+          # Установка Loki
+          helm upgrade --install loki grafana/loki --namespace=logging --create-namespace --values=monitoring/loki/values.yaml
+
+          # Установка Promtail
+          helm upgrade --install promtail grafana/promtail --namespace=monitoring --values=monitoring/promtail/values.yaml
         EOF
+    - name: Clean up
+      run: echo "Deployment process completed."
+ 
