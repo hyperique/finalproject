@@ -93,7 +93,7 @@ jobs:
           helm upgrade --install promtail grafana/promtail --namespace=monitoring --values=monitoring/promtail/values.yaml
 
           # Установка Argo CD
-          helm upgrade --install argo-cd argo-cd/argo-cd --namespace=argo-cd --create-namespace --values=argo-cd/valuescustom.yaml
+          helm upgrade --install argo-cd argo-cd/argo-cd --namespace=argo-cd --create-namespace --values=argocd/valuescustom.yaml
 
           # Ожидание готовности Argo CD
           kubectl rollout status deployment/argo-cd-server -n argo-cd
