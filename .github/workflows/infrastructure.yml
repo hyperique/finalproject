@@ -1,9 +1,7 @@
 name: Deploy to Server
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:  # Ручной запуск через интерфейс GitHub
 
 jobs:
   deploy:
@@ -68,7 +66,10 @@ jobs:
           # Установка MinIO Operator
           helm upgrade --install --namespace minio-operator --create-namespace --values=minio/operator/values.yaml minio-operator minio-operator/operator
           kubectl rollout status deployment/minio-operator -n minio-operator
-
+          
+          # Ожидание после установки оператора
+          sleep 30
+          
           # Создание namespace для MinIO, если он ещё не создан
           kubectl create namespace minio || true
 
@@ -78,6 +79,8 @@ jobs:
           # Установка MinIO Tenant
           helm upgrade --install --namespace minio --create-namespace --values=minio/values.yaml minio-k8s minio-operator/tenant
 
+         
+
           # Создание namespace для мониторинга
           kubectl create namespace monitoring || true 
 
@@ -85,7 +88,10 @@ jobs:
           kubectl apply -f monitoring/grafana/dashboard.yaml
           kubectl apply -f monitoring/grafana/alertrules.yaml
           helm upgrade --install monitoring prometheus-community/kube-prometheus-stack --namespace=monitoring --create-namespace --values=monitoring/grafana/values.yaml
-
+          
+          # Ожидание готовности MinIO Tenant
+          kubectl rollout status deployment/minio-k8s -n minio
+          
           # Установка Loki
           helm upgrade --install loki grafana/loki --namespace=logging --create-namespace --values=monitoring/loki/values.yaml
 
@@ -98,14 +104,24 @@ jobs:
           # Ожидание готовности Argo CD
           kubectl rollout status deployment/argo-cd-argocd-server -n argo-cd
 
-          # Применение секрет для Argo CD
+          # Применение секретов для Argo CD
           kubectl apply -f ~/projects/secrets/argorepo.yaml -n argo-cd
           kubectl apply -f ~/projects/secrets/argocluster.yaml -n argo-cd
-          
 
           # Применение Argo CD манифестов
-          kubectl apply -f argocd/app.yaml
           kubectl apply -f argocd/argoingress.yaml
+
+          # Установка Consul
+          helm upgrade --install consul consul/chart --namespace=consul --create-namespace --values=consul/consulvalues.yaml
+
+          # Ожидание готовности Consul
+          kubectl rollout status statefulset/consul-server -n consul
+
+          # Применение Consul Ingress
+          kubectl apply -f consul/consulingress.yaml
+
+          # Применение Argo CD app манифестов после развертывания Consul
+          kubectl apply -f argocd/app.yaml
         EOF
 
     - name: Clean up
