@@ -1,7 +1,7 @@
 name: Deploy to Server
 
 on:
-  workflow_dispatch:  
+  workflow_dispatch:  # Ручной запуск через интерфейс GitHub
 
 jobs:
   deploy:
@@ -76,6 +76,8 @@ jobs:
           # Установка MinIO Tenant
           helm upgrade --install --namespace minio --create-namespace --values=minio/values.yaml minio-k8s minio-operator/tenant
 
+         
+
           # Создание namespace для мониторинга
           kubectl create namespace monitoring || true 
 
@@ -83,7 +85,10 @@ jobs:
           kubectl apply -f monitoring/grafana/dashboard.yaml
           kubectl apply -f monitoring/grafana/alertrules.yaml
           helm upgrade --install monitoring prometheus-community/kube-prometheus-stack --namespace=monitoring --create-namespace --values=monitoring/grafana/values.yaml
-
+          
+          # Ожидание готовности MinIO Tenant
+          kubectl rollout status deployment/minio-k8s -n minio
+          
           # Установка Loki
           helm upgrade --install loki grafana/loki --namespace=logging --create-namespace --values=monitoring/loki/values.yaml
 
