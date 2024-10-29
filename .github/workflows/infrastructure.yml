@@ -96,10 +96,12 @@ jobs:
           helm upgrade --install argo-cd argo-cd/argo-cd --namespace=argo-cd --create-namespace --values=argocd/valuescustom.yaml
 
           # Ожидание готовности Argo CD
-          kubectl rollout status deployment/argo-cd-server -n argo-cd
+          kubectl rollout status deployment/argo-cd-argocd-server -n argo-cd
 
           # Применение секрет для Argo CD
           kubectl apply -f ~/projects/secrets/argorepo.yaml -n argo-cd
+          kubectl apply -f ~/projects/secrets/argocluster.yaml -n argo-cd
+          
 
           # Применение Argo CD манифестов
           kubectl apply -f argocd/app.yaml
