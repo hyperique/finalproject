@@ -1,0 +1,5 @@
+vsphere_user     = "USER@corp.sw-tech.by"
+vsphere_password = "MY_PASSWORD"
+ssh_user         = "it"
+ssh_password     = "STANDART_PASSWORD"
+ssh_port         = "22"
