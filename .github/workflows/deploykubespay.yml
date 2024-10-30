@@ -54,9 +54,9 @@ jobs:
             ansible-playbook -i inventory/mycluster/hosts.yaml --become-user=root cluster.yml \
               -e ansible_user=root \
               -e ansible_ssh_private_key_file=/home/k8s/.ssh/id_rsa
-            deactivate
+            
           fi
-          deactivate
+          
         EOF
 
     - name: Clean up
